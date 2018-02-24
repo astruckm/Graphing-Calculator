@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G17023" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="7o2-Ug-Ojh">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="7o2-Ug-Ojh">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Calculator-->
+        <!--Calculator View Controller-->
         <scene sceneID="1TG-wf-5Vq">
             <objects>
-                <viewController id="4vL-L5-QKv" customClass="CalculatorViewController" customModule="Graphing_Calculator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4vL-L5-QKv" userLabel="Calculator View Controller" customClass="CalculatorViewController" customModule="Graphing_Calculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nsj-yd-rz9"/>
                         <viewControllerLayoutGuide type="bottom" id="vSP-PJ-dhu"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fiT-9h-H61">
+                    <view key="view" contentMode="scaleToFill" id="fiT-9h-H61" customClass="CalculatorView" customModule="Graphing_Calculator" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -443,7 +443,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="JgQ-hc-FrY" secondAttribute="bottom" constant="7" id="13U-T4-mNy"/>
                             <constraint firstItem="JgQ-hc-FrY" firstAttribute="leading" secondItem="fiT-9h-H61" secondAttribute="leadingMargin" id="QGx-hn-1b4"/>
@@ -490,7 +490,44 @@
                         <subviews>
                             <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="bzQ-mW-ITy" userLabel="Graph View" customClass="GraphView" customModule="Graphing_Calculator" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Intercepts:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qk7-tC-Glt">
+                                        <rect key="frame" x="283" y="72" width="84" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="84" id="C4s-8B-j9S"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Y:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-Mq-tqT">
+                                        <rect key="frame" x="283" y="98" width="84" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X:" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s5K-HY-K8h">
+                                        <rect key="frame" x="283" y="115" width="84" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="trailing" secondItem="qk7-tC-Glt" secondAttribute="trailing" id="99r-hB-ZTO"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="leading" secondItem="bzQ-mW-ITy" secondAttribute="leading" constant="283" id="Cvz-xy-pXc"/>
+                                    <constraint firstItem="qk7-tC-Glt" firstAttribute="leading" secondItem="bzQ-mW-ITy" secondAttribute="leading" constant="283" id="FU0-gk-d3c"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="trailing" secondItem="s5K-HY-K8h" secondAttribute="trailing" id="IKY-s9-ge5"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="trailing" secondItem="bzQ-mW-ITy" secondAttribute="trailingMargin" id="LKR-cS-q85"/>
+                                    <constraint firstItem="qk7-tC-Glt" firstAttribute="top" secondItem="bzQ-mW-ITy" secondAttribute="topMargin" id="Nk1-HC-Wue"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="leading" secondItem="s5K-HY-K8h" secondAttribute="leading" id="TcC-Z1-qnX"/>
+                                    <constraint firstItem="s5K-HY-K8h" firstAttribute="top" secondItem="LiM-Mq-tqT" secondAttribute="bottom" id="WWG-U9-WaD"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="top" secondItem="qk7-tC-Glt" secondAttribute="bottom" constant="9" id="Wsf-Eq-7nY"/>
+                                    <constraint firstItem="s5K-HY-K8h" firstAttribute="width" secondItem="qk7-tC-Glt" secondAttribute="width" id="em3-DL-l4k"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="leading" secondItem="qk7-tC-Glt" secondAttribute="leading" id="n1p-aO-NfK"/>
+                                    <constraint firstItem="LiM-Mq-tqT" firstAttribute="width" secondItem="qk7-tC-Glt" secondAttribute="width" id="tPk-pI-LQI"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="scale">
                                         <real key="value" value="25"/>
@@ -512,6 +549,8 @@
                     <navigationItem key="navigationItem" id="bhm-3r-wsn"/>
                     <connections>
                         <outlet property="graphView" destination="bzQ-mW-ITy" id="giJ-8w-JUr"/>
+                        <outlet property="xIntercepts" destination="s5K-HY-K8h" id="EEC-ge-S4K"/>
+                        <outlet property="yIntercepts" destination="LiM-Mq-tqT" id="a1k-gf-sUg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xcs-a6-jGM" sceneMemberID="firstResponder"/>
@@ -524,7 +563,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gd5-qe-GeF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="wfe-m2-XQf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -542,7 +581,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MqN-0I-U7e" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8tU-qc-1hz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

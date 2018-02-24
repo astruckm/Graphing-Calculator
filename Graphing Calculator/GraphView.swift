@@ -20,6 +20,7 @@ protocol GraphViewDelegate {
 
 @IBDesignable class GraphView: UIView {
     
+    
     weak var dataSource: GraphDataSource?
     var delegate: GraphViewDelegate?
     var newAxesOrigin: CGPoint?
@@ -157,7 +158,7 @@ protocol GraphViewDelegate {
                     let xScaled = (origin.x + (x * scale))
                     let yScaled = (origin.y - (y * scale))
                     let nextPoint = CGPoint(x: xScaled, y: yScaled)
-                    print("\(x), \(y)")
+                    //                print("\(x), \(y)")
                     //                print(nextPoint)
                     path.addLine(to: nextPoint)
                     path.move(to: nextPoint)
