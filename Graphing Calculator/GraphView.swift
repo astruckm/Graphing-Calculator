@@ -20,7 +20,6 @@ protocol GraphViewDelegate {
 
 @IBDesignable class GraphView: UIView {
     
-    
     weak var dataSource: GraphDataSource?
     var delegate: GraphViewDelegate?
     var newAxesOrigin: CGPoint?
@@ -152,7 +151,7 @@ protocol GraphViewDelegate {
             
             path.move(to: startingPoint)
             //THIS RANGE NEEDS TO BE FIXED--should be in terms of origin that was reset?
-            for x in stride(from: -((bounds.width/2) + origin.x) / scale, to: ((bounds.maxX/2 + origin.x) / scale), by: graphUnit) {
+            for x in stride(from: startingPointRawX, to: ((bounds.maxX/2 + origin.x) / scale), by: graphUnit) {
                 //Function goes here
                 if let y = dataSource?.y(x: x) {
                     let xScaled = (origin.x + (x * scale))
