@@ -29,7 +29,7 @@ protocol GraphViewDelegate {
     private var geometryReady = false
     private var originRelativeToCenter: CGPoint = CGPoint() { didSet { setNeedsDisplay() } }
     
-    @IBInspectable var axesColor: UIColor = .gray { didSet { setNeedsDisplay() } }
+    @IBInspectable var axesColor: UIColor = .darkGray { didSet { setNeedsDisplay() } }
     @IBInspectable var scale: CGFloat = 25.0 { didSet { setNeedsDisplay() } } //i.e. relates to range of graph.
     @IBInspectable var pointsPerUnit: CGFloat = 25 {
         didSet {
@@ -149,6 +149,7 @@ protocol GraphViewDelegate {
                 startingPoint = CGPoint(x: startingPointScaledX, y: startingPointScaledY)
             }
             
+            path.lineWidth = 1.5
             path.move(to: startingPoint)
             //THIS RANGE NEEDS TO BE FIXED--should be in terms of origin that was reset?
             for x in stride(from: startingPointRawX, to: ((bounds.maxX/2 + origin.x) / scale), by: graphUnit) {
@@ -165,7 +166,7 @@ protocol GraphViewDelegate {
             }
             return path
         }
-        
+        UIColor.purple.setStroke()
         drawFunction().stroke()
         //print("Origin is: \(origin)")
     }

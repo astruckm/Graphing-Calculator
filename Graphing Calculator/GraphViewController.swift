@@ -97,7 +97,6 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
     
     func calculateYIntercept() -> CGFloat? {
         if let yIntercept = function?(0.0) {
-//            print("One Y is: \(yIntercept)")
             return CGFloat(yIntercept)
         } else { return nil }
     }
@@ -118,7 +117,6 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         xIntercepts = Array(Set(xIntercepts))
         xIntercepts.sort(by: <)
         
-//        print("X intercepts are: \(xIntercepts)")
         return xIntercepts
     }
     

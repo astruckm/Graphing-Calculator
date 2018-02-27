@@ -15,11 +15,31 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var memoryLabel: UILabel!
     @IBOutlet weak var graphLabel: UIButton!
+    @IBOutlet var numbersButtons: [UIButton]!
+    @IBOutlet var functionsButtons: [UIButton]!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.splitViewController?.delegate = self
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        graphLabel.titleLabel?.textColor = .blue
+        for numberButton in numbersButtons {
+            numberButton.layer.cornerRadius = 10
+            numberButton.clipsToBounds = true
+        }
+        for functionButton in functionsButtons {
+            functionButton.layer.cornerRadius = 10
+            functionButton.clipsToBounds = true
+        }
+        display.layer.borderWidth = 0.5
+        display.layer.borderColor = UIColor.lightGray.cgColor
+        display.layer.cornerRadius = 10
+        display.clipsToBounds = true
+    }
+    
     
     //MARK: Properties
     var userIsInTheMiddleOfTyping = false
