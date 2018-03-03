@@ -33,6 +33,8 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         for functionButton in functionsButtons {
             functionButton.layer.cornerRadius = 10
             functionButton.clipsToBounds = true
+            functionButton.titleLabel?.adjustsFontSizeToFitWidth = true
+            functionButton.titleLabel?.minimumScaleFactor = 0.5
         }
         display.layer.borderWidth = 0.5
         display.layer.borderColor = UIColor.lightGray.cgColor
@@ -177,6 +179,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         if primaryViewController.contents == self {
             if let gvc = secondaryViewController.contents as? GraphViewController {
                 //Actually doing nothing here
+                print("gvc")
                 return true
             }
         }
@@ -187,18 +190,20 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard !brain.resultIsPending else { return }
         
-        var destinationViewController = segue.destination
-        if let navigationController = destinationViewController as? UINavigationController {
-            destinationViewController = navigationController.visibleViewController ?? destinationViewController
-        }
-        if let graphViewController = destinationViewController as? GraphViewController {
-            graphViewController.title = brain.description == "" ? "Graph" : brain.description.components(separatedBy: ", ").last?.beautifyNumbers()
-            
-            graphViewController.function = { (x: CGFloat) -> Double in
-                self.brain.storedVariable = Double(x)
-                if let result = self.brain.result {
-                    return result
-                } else { return 0.0 }
+        if segue.identifier == "graph" {
+            var destinationViewController = segue.destination
+            if let navigationController = destinationViewController as? UINavigationController {
+                destinationViewController = navigationController.visibleViewController ?? destinationViewController
+            }
+            if let graphViewController = destinationViewController as? GraphViewController {
+                graphViewController.title = brain.description == "" ? "Graph" : brain.description.components(separatedBy: ", ").last?.beautifyNumbers()
+                
+                graphViewController.function = { (x: CGFloat) -> Double in
+                    self.brain.storedVariable = Double(x)
+                    if let result = self.brain.result {
+                        return result
+                    } else { return 0.0 }
+                }
             }
         }
     }

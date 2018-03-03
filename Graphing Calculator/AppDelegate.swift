@@ -16,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        guard let splitViewController = window?.rootViewController as? UISplitViewController,
+            let rightNavController = splitViewController.viewControllers.last as? UINavigationController,
+            let graphViewController = rightNavController.topViewController as? GraphViewController
+            else { fatalError() }
+
+        graphViewController.navigationItem.leftItemsSupplementBackButton = true
+        graphViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
+        
+        
         return true
     }
 

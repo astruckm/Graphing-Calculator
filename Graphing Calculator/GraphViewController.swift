@@ -71,7 +71,7 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         xIntercepts.numberOfLines = 0
         xIntercepts?.text? += textToAdd
     }
-    
+        
     //MARK: Persistence
     func scale(_ scale: CGFloat, sender: GraphView) {
         UserDefaults.standard.set(scale, forKey: Keys.Scale)
