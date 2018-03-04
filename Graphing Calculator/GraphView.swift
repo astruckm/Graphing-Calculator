@@ -2,14 +2,11 @@
 //  GraphView.swift
 //  Graphing MVC
 //
-//  Created by ASM on 10/4/17.
-//  Copyright © 2017 ASM. All rights reserved.
-//
 
 import UIKit
 
 protocol GraphDataSource: class {
-    func y(x: CGFloat) -> CGFloat?
+    func y(_ x: CGFloat) -> CGFloat?
 }
 
 protocol GraphViewDelegate {
@@ -19,11 +16,10 @@ protocol GraphViewDelegate {
 
 
 @IBDesignable class GraphView: UIView {
-    
     weak var dataSource: GraphDataSource?
     var delegate: GraphViewDelegate?
     var newAxesOrigin: CGPoint?
-    var snapshot: UIView?
+    var snapshot: UIView? //Make image of previous axis while moving or zooming graph
     
     private var axesDrawer = AxesDrawer()
     private var geometryReady = false
@@ -143,7 +139,7 @@ protocol GraphViewDelegate {
             
             let startingPointRawX = -((bounds.width/2) + origin.x) / scale
             let startingPointScaledX = (origin.x + (startingPointRawX * scale))
-            let startingPointRawY = dataSource?.y(x: startingPointRawX)
+            let startingPointRawY = dataSource?.y(startingPointRawX)
             if startingPointRawY != nil {
                 let startingPointScaledY = (origin.y - (startingPointRawY! * scale))
                 startingPoint = CGPoint(x: startingPointScaledX, y: startingPointScaledY)
@@ -151,15 +147,12 @@ protocol GraphViewDelegate {
             
             path.lineWidth = 1.5
             path.move(to: startingPoint)
-            //THIS RANGE NEEDS TO BE FIXED--should be in terms of origin that was reset?
             for x in stride(from: startingPointRawX, to: ((bounds.maxX/2 + origin.x) / scale), by: graphUnit) {
                 //Function goes here
-                if let y = dataSource?.y(x: x) {
+                if let y = dataSource?.y(x) {
                     let xScaled = (origin.x + (x * scale))
                     let yScaled = (origin.y - (y * scale))
                     let nextPoint = CGPoint(x: xScaled, y: yScaled)
-                    //                print("\(x), \(y)")
-                    //                print(nextPoint)
                     path.addLine(to: nextPoint)
                     path.move(to: nextPoint)
                 }
@@ -168,7 +161,6 @@ protocol GraphViewDelegate {
         }
         UIColor.purple.setStroke()
         drawFunction().stroke()
-        //print("Origin is: \(origin)")
     }
     
 }

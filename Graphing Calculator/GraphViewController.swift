@@ -2,17 +2,13 @@
 //  ViewController.swift
 //  Graphing MVC
 //
-//  Created by ASM on 10/3/17.
-//  Copyright © 2017 ASM. All rights reserved.
-//
 
 import UIKit
 
 class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate {
-    
+    //MARK: Outlets
     @IBOutlet weak var xIntercepts: UILabel!
     @IBOutlet weak var yIntercepts: UILabel!
-    
     @IBOutlet weak var graphView: GraphView! {
         didSet {
             graphView.dataSource = self
@@ -32,25 +28,30 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
             
             updateUI()
             
-//            if let scale = UserDefaults.value(forKey: Keys.Scale) as? CGFloat {
+            //[<NSUserDefaults 0x104c2bbe0> valueForUndefinedKey:]: this class is not key value coding-compliant for the key GraphViewController.Scale.
+//            if let scale = UserDefaults.value(forKey: Keys.scale) as? CGFloat {
 //                graphView.pointsPerUnit = scale
 //                graphView.scale = graphView.pointsPerUnit
 //            }
-//
-//            if let origin = UserDefaults.value(forKey: Keys.Origin) as? String {
+//            
+//            if let origin = UserDefaults.value(forKey: Keys.origin) as? String {
 //                graphView.newAxesOrigin = CGPointFromString(origin)
 //                graphView.origin = graphView.newAxesOrigin ?? graphView.center
 //            }
+
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         displayIntercepts()
     }
     
     private func updateUI() {
         graphView.draw(graphView.bounds)
+        scale(graphView.scale, sender: graphView)
+        origin(graphView.origin, sender: graphView)
     }
     
     private func displayIntercepts() {
@@ -74,22 +75,23 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         
     //MARK: Persistence
     func scale(_ scale: CGFloat, sender: GraphView) {
-        UserDefaults.standard.set(scale, forKey: Keys.Scale)
+        UserDefaults.standard.set(scale, forKey: Keys.scale)
+//        let scale = UserDefaults.standard.float(forKey: Keys.scale)
     }
     
     func origin(_ origin: CGPoint, sender: GraphView) {
-        UserDefaults.standard.set(NSStringFromCGPoint(origin), forKey: Keys.Origin)
+        UserDefaults.standard.set(NSStringFromCGPoint(origin), forKey: Keys.origin)
     }
     
     private struct Keys {
-        static let Scale = "GraphViewController.Scale"
-        static let Origin = "GraphViewController.Origin"
+        static let scale = "GraphViewController.Scale"
+        static let origin = "GraphViewController.Origin"
     }
     
     //MARK: Model
     var function: ((CGFloat) -> Double)?
     
-    func y(x: CGFloat) -> CGFloat? {
+    func y(_ x: CGFloat) -> CGFloat? {
         if let function = self.function {
             return CGFloat(function(x))
         } else { return nil }
@@ -97,11 +99,11 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
     
     func calculateYIntercept() -> CGFloat? {
         if let yIntercept = function?(0.0) {
-            return CGFloat(yIntercept)
+            let yInterceptHundredths = (Double(yIntercept) * 100).rounded() / 100
+            return CGFloat(yInterceptHundredths)
         } else { return nil }
     }
     
-    //Use generic for input func?? OR just use the type of var function above
     func calculateXIntercepts() -> [CGFloat] {
         var xIntercepts = [CGFloat]()
         var xValue = -((graphView.bounds.width/2) + graphView.origin.x) / graphView.scale

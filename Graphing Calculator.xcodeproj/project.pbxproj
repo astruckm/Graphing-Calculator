@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		722E46DB2042569A00DAF987 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722E46DA2042569A00DAF987 /* CalculatorView.swift */; };
-		722E46DD2042574B00DAF987 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722E46DC2042574B00DAF987 /* UIViewExtension.swift */; };
 		725A96D61FA0CA5B00750C55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725A96D51FA0CA5B00750C55 /* AppDelegate.swift */; };
 		725A96D81FA0CA5B00750C55 /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725A96D71FA0CA5B00750C55 /* CalculatorViewController.swift */; };
 		725A96DB1FA0CA5B00750C55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 725A96D91FA0CA5B00750C55 /* Main.storyboard */; };
@@ -21,8 +19,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		722E46DA2042569A00DAF987 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
-		722E46DC2042574B00DAF987 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		725A96D21FA0CA5B00750C55 /* Graphing Calculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Graphing Calculator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		725A96D51FA0CA5B00750C55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		725A96D71FA0CA5B00750C55 /* CalculatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewController.swift; sourceTree = "<group>"; };
@@ -77,7 +73,6 @@
 		725A96E71FA0CA7500750C55 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				722E46DC2042574B00DAF987 /* UIViewExtension.swift */,
 				725A96D51FA0CA5B00750C55 /* AppDelegate.swift */,
 				725A96DC1FA0CA5B00750C55 /* Assets.xcassets */,
 				725A96DE1FA0CA5B00750C55 /* LaunchScreen.storyboard */,
@@ -91,7 +86,6 @@
 			children = (
 				725A96D71FA0CA5B00750C55 /* CalculatorViewController.swift */,
 				725A96E81FA0CB5400750C55 /* CalculatorBrain.swift */,
-				722E46DA2042569A00DAF987 /* CalculatorView.swift */,
 			);
 			name = Calculator;
 			sourceTree = "<group>";
@@ -180,12 +174,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				725A96EE1FA0CCCF00750C55 /* GraphView.swift in Sources */,
-				722E46DB2042569A00DAF987 /* CalculatorView.swift in Sources */,
 				725A96E91FA0CB5400750C55 /* CalculatorBrain.swift in Sources */,
 				725A96EB1FA0CC9600750C55 /* AxesDrawer.swift in Sources */,
 				725A96F01FA0CD0A00750C55 /* GraphViewController.swift in Sources */,
 				725A96D81FA0CA5B00750C55 /* CalculatorViewController.swift in Sources */,
-				722E46DD2042574B00DAF987 /* UIViewExtension.swift in Sources */,
 				725A96D61FA0CA5B00750C55 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

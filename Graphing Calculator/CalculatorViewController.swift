@@ -1,9 +1,6 @@
 //
-//  ViewController.swift
+//  CalculatorViewController.swift
 //  Graphing Calculator
-//
-//  Created by ASM on 10/25/17.
-//  Copyright © 2017 ASM. All rights reserved.
 //
 
 import UIKit
@@ -25,7 +22,6 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        graphLabel.titleLabel?.textColor = .blue
         for numberButton in numbersButtons {
             numberButton.layer.cornerRadius = 10
             numberButton.clipsToBounds = true
@@ -46,6 +42,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     //MARK: Properties
     var userIsInTheMiddleOfTyping = false
     var memoryDictionary = [String : Double]()
+    var memoryHasBeenSet = false
     
     //Tracks value of display label as a Double.
     var displayValue: Double {
@@ -53,15 +50,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
             return Double(display.text!)!
         }
         set {
-            numberFormatter.numberStyle = NumberFormatter.Style.decimal
-            numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-            numberFormatter.maximumFractionDigits = 6
-            let displayValueAsNSNumber = NSNumber(value: newValue)
-            if let formattedDecimal = numberFormatter.string(from: displayValueAsNSNumber) {
-                display.text = String(describing: formattedDecimal)
-            } else {
-                display.text = "ERROR"
-            }
+            display.text = String(newValue).beautifyNumbers()
         }
     }
     
@@ -70,7 +59,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         
         if let error = evaluated.error {
             display.text = error
-        } else if let result = evaluated.result {
+        } else if let result = evaluated.result, (memoryHasBeenSet || !evaluated.description.contains("M"))  {
             displayValue = result
         }
         
@@ -87,7 +76,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     
     //MARK: Actions
     
-    //Digit buttons.
+    //Digits
     @IBAction func touchDigit(_ sender: UIButton) {
         //Stop user from being able to add multiple decimal points.
         if (display.text?.contains("."))! && sender.currentTitle == "." && userIsInTheMiddleOfTyping { return }
@@ -120,7 +109,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         updateDisplay()
     }
     
-    //for M button
+    //M
     @IBAction func memory(_ sender: UIButton) {
         if sender.currentTitle == "M" {
             brain.setOperand(variable: "M")
@@ -129,40 +118,48 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         }
     }
     
-    //for →M button
+    //→M
     @IBAction func sendToMemory(_ sender: UIButton) {
         memoryDictionary["M"] = displayValue
         userIsInTheMiddleOfTyping = false
         updateDisplay()
         let beautifiedMemoryNumber = String(memoryDictionary["M"]!).beautifyNumbers()
         memoryLabel.text = "M: " + beautifiedMemoryNumber
+        memoryHasBeenSet = true
     }
     
+    //MC
     @IBAction func clearMemory(_ sender: UIButton) {
+        clearMemory()
+    }
+    
+    func clearMemory() {
         memoryDictionary = [String : Double]()
         memoryLabel.text = " "
+        memoryHasBeenSet = false
     }
     
+    //c
     @IBAction func clearDisplay(_ sender: UIButton) {
         brain = CalculatorBrain()
-        memoryDictionary = [String : Double]()
         displayValue = 0
         descriptionLabel.text = "    "
-        memoryLabel.text = " "
         userIsInTheMiddleOfTyping = false
+        clearMemory()
     }
     
+    //undo
     @IBAction func undo(_ sender: UIButton) {
         if userIsInTheMiddleOfTyping {
-            var displayValueStringChar = String(displayValue).characters
+            var displayValueString = String(displayValue)
             
             if displayValue == Double(Int(displayValue)) {
-                displayValueStringChar.removeFirst()
-                display.text = String(displayValueStringChar)
+                displayValueString.removeFirst()
+                display.text = displayValueString
                 displayValue = Double(display.text!)!
             } else {
-                displayValueStringChar.removeLast()
-                display.text = String(displayValueStringChar)
+                displayValueString.removeLast()
+                display.text = displayValueString
             }
             
             if displayValue == 0.0 {
@@ -174,19 +171,18 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
         }
     }
     
+    //MARK: Navigation
     //Using split view controller's delegate to get calculator view to appear first. This is telling our Split View Controller we are collapsing detail VC onto master, but actually we're doing nothing
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         if primaryViewController.contents == self {
             if let gvc = secondaryViewController.contents as? GraphViewController {
                 //Actually doing nothing here
-                print("gvc")
                 return true
             }
         }
         return false
     }
 
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard !brain.resultIsPending else { return }
         

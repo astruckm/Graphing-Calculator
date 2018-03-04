@@ -2,9 +2,6 @@
 //  AppDelegate.swift
 //  Graphing Calculator
 //
-//  Created by ASM on 10/25/17.
-//  Copyright © 2017 ASM. All rights reserved.
-//
 
 import UIKit
 

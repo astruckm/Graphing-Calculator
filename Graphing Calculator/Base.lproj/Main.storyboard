@@ -18,7 +18,7 @@
                         <viewControllerLayoutGuide type="top" id="nsj-yd-rz9"/>
                         <viewControllerLayoutGuide type="bottom" id="vSP-PJ-dhu"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="fiT-9h-H61" customClass="CalculatorView" customModule="Graphing_Calculator" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="fiT-9h-H61">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -529,24 +529,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JMr-Il-sWF" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1060" y="-182.15892053973016"/>
-        </scene>
-        <!--Delete-->
-        <scene sceneID="yxy-oV-NIn">
-            <objects>
-                <viewController title="Delete" id="Y9N-vN-oru" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="O5P-V0-WUz"/>
-                        <viewControllerLayoutGuide type="bottom" id="3dS-la-xje"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="716-Gh-bNP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="k1p-OQ-Gxv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1783" y="-320"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="8ma-Ly-RzE">

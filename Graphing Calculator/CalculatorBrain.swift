@@ -2,13 +2,8 @@
 //  CalculatorBrain.swift
 //  Graphing Calculator
 //
-//  Created by ASM on 10/25/17.
-//  Copyright © 2017 ASM. All rights reserved.
-//
 
 import Foundation
-
-
 
 struct CalculatorBrain: CustomStringConvertible {
     
@@ -24,7 +19,6 @@ struct CalculatorBrain: CustomStringConvertible {
     }
     
     //Making the operations specific cases of a type so can call on operation within operations dictionary.
-    //Cases here have associated values to enable that.
     private enum Operation {
         case constant(Double)
         case nullaryOperation(() -> Double)
@@ -103,7 +97,7 @@ struct CalculatorBrain: CustomStringConvertible {
         var accumulator: (Double, String)?
         var error: String?
         
-        //MARK: Gives the logic for doing a binary operation
+        //Gives the logic for doing a binary operation
         struct PendingBinaryOperation {
             let function: (Double, Double) -> Double
             let description: (String, String) -> String
@@ -111,7 +105,6 @@ struct CalculatorBrain: CustomStringConvertible {
             
             let symbol: String
             
-            //NOT mutating, as it doesn't change anything in PendingBinaryOperation.
             func perform(with secondOperand: (Double, String)) -> (Double, String) {
                 return (function(firstOperand.0, secondOperand.0), description(firstOperand.1, secondOperand.1))
             }
@@ -191,21 +184,5 @@ struct CalculatorBrain: CustomStringConvertible {
         }
         
         return (result, pendingBinaryOperation != nil, description, error)
-    }
-    
-    
-    //Call an instance of NumberFormatter to use in this struct
-    private let numberFormatter = NumberFormatter()
-    
-    //Function to format the decimal: no more than 6 places, or if number is an Int, none.
-    //number will be the accumulator's 0 index.
-    private func formatDecimal(number: Double) -> String {
-        numberFormatter.numberStyle = NumberFormatter.Style.decimal
-        numberFormatter.roundingMode = NumberFormatter.RoundingMode.halfUp
-        let maximumFractionDigits = (number == Double(Int(number)) ? 0 : 6)
-        numberFormatter.maximumFractionDigits = maximumFractionDigits
-        
-        let displayValueAsNSNumber = NSNumber(value: number)
-        return numberFormatter.string(from: displayValueAsNSNumber)!
-    }
+    }    
 }
