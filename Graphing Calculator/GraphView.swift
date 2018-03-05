@@ -9,16 +9,8 @@ protocol GraphDataSource: class {
     func y(_ x: CGFloat) -> CGFloat?
 }
 
-protocol GraphViewDelegate {
-    func scale(_ scale: CGFloat, sender: GraphView)
-    func origin(_ origin: CGPoint, sender: GraphView)
-}
-
-
 @IBDesignable class GraphView: UIView {
     weak var dataSource: GraphDataSource?
-    var delegate: GraphViewDelegate?
-    var newAxesOrigin: CGPoint?
     var snapshot: UIView? //Make image of previous axis while moving or zooming graph
     
     private var axesDrawer = AxesDrawer()
@@ -27,12 +19,7 @@ protocol GraphViewDelegate {
     
     @IBInspectable var axesColor: UIColor = .darkGray { didSet { setNeedsDisplay() } }
     @IBInspectable var scale: CGFloat = 25.0 { didSet { setNeedsDisplay() } } //i.e. relates to range of graph.
-    @IBInspectable var pointsPerUnit: CGFloat = 25 {
-        didSet {
-            setNeedsDisplay()
-            delegate?.scale(pointsPerUnit, sender: self)
-        }
-    }
+    @IBInspectable var pointsPerUnit: CGFloat = 25 { didSet { setNeedsDisplay() } }
     
     var origin: CGPoint {
         get {
@@ -52,18 +39,7 @@ protocol GraphViewDelegate {
             originRelativeToCenter = origin
         }
     }
-        
-    private var axesOrigin: CGPoint {
-        get {
-            return newAxesOrigin ?? convert(center, from: superview)
-        }
-        set {
-            newAxesOrigin = newValue
-            delegate?.origin(newValue, sender: self)
-            setNeedsDisplay()
-        }
-    }
-    
+            
     func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
         switch pinchRecognizer.state {
         case .began:

@@ -5,7 +5,7 @@
 
 import UIKit
 
-class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate {
+class GraphViewController: UIViewController, GraphDataSource {
     //MARK: Outlets
     @IBOutlet weak var xIntercepts: UILabel!
     @IBOutlet weak var yIntercepts: UILabel!
@@ -13,47 +13,42 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         didSet {
             graphView.dataSource = self
             
-            let pinchHandler = #selector(GraphView.changeScale(byReactingTo:))
-            let pinchRecognizer = UIPinchGestureRecognizer(target: graphView, action: pinchHandler)
+            let pinchHandler = #selector(self.changeScale(byReactingTo:))
+            let pinchRecognizer = UIPinchGestureRecognizer(target: self, action: pinchHandler)
             graphView.addGestureRecognizer(pinchRecognizer)
             
-            let panHandler = #selector(GraphView.moveGraph(byReactingTo:))
-            let panRecognizer = UIPanGestureRecognizer(target: graphView, action: panHandler)
+            let panHandler = #selector(self.moveGraph(byReactingTo:))
+            let panRecognizer = UIPanGestureRecognizer(target: self, action: panHandler)
             graphView.addGestureRecognizer(panRecognizer)
-            
-            let tapHandler = #selector(GraphView.moveOrigin(byReactingTo:))
-            let tapRecognizer = UITapGestureRecognizer(target: graphView, action: tapHandler)
+
+            let tapHandler = #selector(self.moveOrigin(byReactingTo:))
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: tapHandler)
             tapRecognizer.numberOfTapsRequired = 2
             graphView.addGestureRecognizer(tapRecognizer)
             
-            updateUI()
-            
-            //[<NSUserDefaults 0x104c2bbe0> valueForUndefinedKey:]: this class is not key value coding-compliant for the key GraphViewController.Scale.
-//            if let scale = UserDefaults.value(forKey: Keys.scale) as? CGFloat {
-//                graphView.pointsPerUnit = scale
-//                graphView.scale = graphView.pointsPerUnit
-//            }
-//            
-//            if let origin = UserDefaults.value(forKey: Keys.origin) as? String {
-//                graphView.newAxesOrigin = CGPointFromString(origin)
-//                graphView.origin = graphView.newAxesOrigin ?? graphView.center
-//            }
+            if !resetOrigin {
+                graphView.origin = origin
+            }
+            graphView.scale = scale
 
+            graphView.draw(graphView.bounds)
+        }
+    }
+    
+    private var resetOrigin: Bool {
+        get {
+            if defaults.object(forKey: Keys.origin) is [CGFloat] {
+                return false
+            }
+            return true
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         displayIntercepts()
     }
-    
-    private func updateUI() {
-        graphView.draw(graphView.bounds)
-        scale(graphView.scale, sender: graphView)
-        origin(graphView.origin, sender: graphView)
-    }
-    
+        
     private func displayIntercepts() {
         let yCrossing = calculateYIntercept()
         let xCrossings = calculateXIntercepts()
@@ -73,20 +68,6 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         xIntercepts?.text? += textToAdd
     }
         
-    //MARK: Persistence
-    func scale(_ scale: CGFloat, sender: GraphView) {
-        UserDefaults.standard.set(scale, forKey: Keys.scale)
-//        let scale = UserDefaults.standard.float(forKey: Keys.scale)
-    }
-    
-    func origin(_ origin: CGPoint, sender: GraphView) {
-        UserDefaults.standard.set(NSStringFromCGPoint(origin), forKey: Keys.origin)
-    }
-    
-    private struct Keys {
-        static let scale = "GraphViewController.Scale"
-        static let origin = "GraphViewController.Origin"
-    }
     
     //MARK: Model
     var function: ((CGFloat) -> Double)?
@@ -122,5 +103,54 @@ class GraphViewController: UIViewController, GraphDataSource, GraphViewDelegate 
         return xIntercepts
     }
     
+    //MARK: Persistence
+    private struct Keys {
+        static let scale = "GraphViewController.Scale"
+        static let origin = "GraphViewController.Origin"
+    }
+    let defaults = UserDefaults.standard
+    
+    private var scale: CGFloat {
+        get { return defaults.value(forKey: Keys.scale) as? CGFloat ?? 25.0 }
+        set { defaults.set(newValue, forKey: Keys.scale) }
+    }
+    
+    private var origin: CGPoint {
+        get {
+            var origin = CGPoint()
+            if let originArray = defaults.value(forKey: Keys.origin) as? [CGFloat] {
+                origin.x = originArray.first!
+                origin.y = originArray.last!
+            }
+            return origin
+        }
+        set {
+            defaults.set([newValue.x, newValue.y], forKey: Keys.origin)
+        }
+    }
+
+    //Call graphView's gesture recognizers to save scale and origin after each user gesture
+    func changeScale(byReactingTo pinchRecognizer: UIPinchGestureRecognizer) {
+        graphView.changeScale(byReactingTo: pinchRecognizer)
+        if pinchRecognizer.state == .ended {
+            scale = graphView.scale
+            origin = graphView.origin
+        }
+    }
+    
+    func moveGraph(byReactingTo panRecognizer: UIPanGestureRecognizer) {
+        graphView.moveGraph(byReactingTo: panRecognizer)
+        if panRecognizer.state == .ended {
+            origin = graphView.origin
+        }
+    }
+    
+    func moveOrigin(byReactingTo tapRecognizer: UITapGestureRecognizer) {
+        graphView.moveOrigin(byReactingTo: tapRecognizer)
+        if tapRecognizer.state == .ended {
+            origin = graphView.origin
+        }
+    }
+
 }
 

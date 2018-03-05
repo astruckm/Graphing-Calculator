@@ -175,7 +175,7 @@ class CalculatorViewController: UIViewController, UISplitViewControllerDelegate 
     //Using split view controller's delegate to get calculator view to appear first. This is telling our Split View Controller we are collapsing detail VC onto master, but actually we're doing nothing
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         if primaryViewController.contents == self {
-            if let gvc = secondaryViewController.contents as? GraphViewController {
+            if secondaryViewController.contents is GraphViewController {
                 //Actually doing nothing here
                 return true
             }
